@@ -28,23 +28,17 @@ jobs:
 
             if [[ -f "${folder}/README.md" ]]; then
               echo "- ${link}" >> "${folder}/README.md"
-              CHANGES=true
             else
               echo "# ${folder}" > "${folder}/README.md"
               echo "- ${link}" >> "${folder}/README.md"
-              CHANGES=true
             fi
           done
       - name: Commit and push changes
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "${{ steps.get-email.outputs.email }}"
-          if [[ -n $CHANGES ]]; then
-            git add .
-            git commit -m "📝 Update README with new link"
-            git push
-          else
-            echo "No changes to commit."
-          fi
+          git add .
+          git commit -m "📝 Update README with new link"
+          git push
         env: 
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
